@@ -4,11 +4,14 @@ import { useEffect } from "react";
 
 import { useCurrent } from "@/features/auth/api/useCurrent";
 import { useRouter } from "next/navigation";
+import { useLogout } from "@/features/auth/api/useLogout";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const router = useRouter();
 
   const { data, isLoading } = useCurrent();
+  const { mutate } = useLogout();
 
   useEffect(() => {
     if (!data && !isLoading) {
@@ -16,5 +19,10 @@ export default function Home() {
     }
   }, [data]);
 
-  return <div className="">Only visible to authorized users.</div>;
+  return ( 
+    <div className="">
+      Only visible to authorized users.
+      <Button onClick={() => mutate()}>Logout</Button>
+    </div>
+  );
 }
