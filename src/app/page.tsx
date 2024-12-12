@@ -1,11 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { useCurrent } from "@/features/auth/api/useCurrent";
-import { useRouter } from "next/navigation";
 import { useLogout } from "@/features/auth/api/useLogout";
-import { Button } from "@/components/ui/button";
+import { UserButton } from "@/features/auth/components/UserButton";
 
 export default function Home() {
   const router = useRouter();
@@ -19,10 +19,9 @@ export default function Home() {
     }
   }, [data]);
 
-  return ( 
+  return (
     <div className="">
-      Only visible to authorized users.
-      <Button onClick={() => mutate()}>Logout</Button>
+      <UserButton />
     </div>
   );
 }
