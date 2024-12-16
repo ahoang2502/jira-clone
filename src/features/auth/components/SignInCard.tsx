@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -122,7 +124,7 @@ export const SignInCard = () => {
 
       <CardContent className="p-7 flex items-center justify-center">
         <p className="">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/sign-up">
             <span className="text-blue-700">Sign up</span>
           </Link>
