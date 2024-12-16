@@ -1,6 +1,7 @@
 import React from "react";
 
 import { UserButton } from "@/features/auth/components/UserButton";
+import { MobileSidebar } from "./MobileSidebar";
 
 export const Navbar = () => {
   return (
@@ -12,6 +13,7 @@ export const Navbar = () => {
         </p>
       </div>
 
+      <MobileSidebar />
       <UserButton />
     </nav>
   );
