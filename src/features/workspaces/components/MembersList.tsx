@@ -7,24 +7,58 @@ import { Fragment } from "react";
 import { DottedSeparator } from "@/components/Dotted-Separator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
+import { useConfirm } from "@/hooks/useConfirm";
 
+import { useDeleteMember } from "@/features/members/api/useDeleteMember";
 import { useGetMembers } from "@/features/members/api/useGetMembers";
+import { useUpdateMember } from "@/features/members/api/useUpdateMember";
 import { MemberAvatar } from "@/features/members/components/MemberAvatar";
+import { MemberRole } from "@/features/members/types";
 import { useWorkspaceId } from "../hooks/useWorkspaceId";
 
 export const MembersList = () => {
   const workspaceId = useWorkspaceId();
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Remove member",
+    "This member will be removed from the workspace",
+    "destructive"
+  );
+
   const { data } = useGetMembers({ workspaceId });
+  const { mutate: deleteMember, isPending: isDeletingMember } =
+    useDeleteMember();
+  const { mutate: updateMember, isPending: isUpdatingMember } =
+    useUpdateMember();
+
+  const handleUpdateMember = (memberId: string, role: MemberRole) => {
+    updateMember({ json: { role }, param: { memberId } });
+  };
+
+  const handleDeleteMember = async (memberId: string) => {
+    const ok = await confirm();
+    if (!ok) return;
+
+    deleteMember(
+      { param: { memberId } },
+      {
+        onSuccess: () => {
+          window.location.reload();
+        },
+      }
+    );
+  };
 
   return (
     <Card className="w-full h-full border-none shadow-none">
+      <ConfirmDialog />
+
       <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
         <Button variant="secondary" size="sm" asChild>
           <Link href={`/workspaces/${workspaceId}`}>
@@ -65,24 +99,28 @@ export const MembersList = () => {
                   <DropdownMenuContent side="bottom" align="end">
                     <DropdownMenuItem
                       className="font-medium"
-                      onClick={() => {}}
-                      disabled={false}
+                      onClick={() =>
+                        handleUpdateMember(member.$id, MemberRole.ADMIN)
+                      }
+                      disabled={isUpdatingMember}
                     >
                       Set as Administration
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
                       className="font-medium"
-                      onClick={() => {}}
-                      disabled={false}
+                      onClick={() =>
+                        handleUpdateMember(member.$id, MemberRole.MEMBER)
+                      }
+                      disabled={isUpdatingMember}
                     >
                       Set as Member
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
                       className="font-medium text-amber-700"
-                      onClick={() => {}}
-                      disabled={false}
+                      onClick={() => handleDeleteMember(member.$id)}
+                      disabled={isDeletingMember}
                     >
                       Remove {member.name}
                     </DropdownMenuItem>
