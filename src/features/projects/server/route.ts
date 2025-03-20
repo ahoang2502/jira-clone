@@ -18,6 +18,8 @@ const app = new Hono().get(
 
     const { workspaceId } = c.req.valid("query");
 
+    if (!workspaceId) return c.json({ error: "Missing workspaceId" }, 400);
+
     const member = await getMember({
       databases,
       workspaceId,
