@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID } from "@/config";
 import { sessionMiddleware } from "@/lib/session-middleware";
-import { createProjectSchema } from "../schema";
+import { createProjectSchema } from "../schemas";
 
 import { getMember } from "@/features/members/utils";
 
