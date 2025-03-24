@@ -5,7 +5,7 @@ import { useCreateWorkspaceModal } from "../hooks/useCreateWorkspaceModal";
 import { CreateWorkspaceForm } from "./CreateWorkspaceForm";
 
 export const CreateWorkspaceModal = () => {
-  const { isOpen, setIsOpen } = useCreateWorkspaceModal();
+  const { isOpen, setIsOpen, close } = useCreateWorkspaceModal();
 
   return (
     <ResponsiveModal open={isOpen} onOpenChange={setIsOpen}>
