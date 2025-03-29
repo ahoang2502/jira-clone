@@ -23,10 +23,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useConfirm } from "@/hooks/useConfirm";
 import { cn } from "@/lib/utils";
-
-import { useUpdateProject } from "../api/useUpdateProject";
 import { updateProjectSchema } from "../schemas";
 import { Project } from "../types";
+
+import { useDeleteProject } from "../api/useDeleteProject";
+import { useUpdateProject } from "../api/useUpdateProject";
 
 interface EditProjectFormProps {
   onCancel?: () => void;
@@ -39,8 +40,8 @@ export const EditProjectForm = ({
 }: EditProjectFormProps) => {
   const router = useRouter();
   const { mutate, isPending } = useUpdateProject();
-  //   const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } =
-  //     useDeleteWorkspace();
+  const { mutate: deleteProject, isPending: isDeletingProject } =
+    useDeleteProject();
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete project",
@@ -63,14 +64,14 @@ export const EditProjectForm = ({
 
     if (!ok) return;
 
-    // deleteWorkspace(
-    //   { param: { workspaceId: initialValues.$id } },
-    //   {
-    //     onSuccess: () => {
-    //       window.location.href = "/";
-    //     },
-    //   }
-    // );
+    deleteProject(
+      { param: { projectId: initialValues.$id } },
+      {
+        onSuccess: () => {
+          window.location.href = `/workspaces/${initialValues.workspaceId}`;
+        },
+      }
+    );
   };
 
   const onSubmit = (values: z.infer<typeof updateProjectSchema>) => {
@@ -104,10 +105,11 @@ export const EditProjectForm = ({
             size="sm"
             variant="secondary"
             onClick={
-              onCancel || (() =>
-                    router.push(
-                      `/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`
-                    ))
+              onCancel ||
+              (() =>
+                router.push(
+                  `/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`
+                ))
             }
           >
             <ArrowLeftIcon className="size-4 mr-2" />
@@ -257,7 +259,7 @@ export const EditProjectForm = ({
               size="sm"
               variant="destructive"
               type="button"
-              disabled={isPending}
+              disabled={isPending || isDeletingProject}
               onClick={handleDelete}
             >
               Delete project
