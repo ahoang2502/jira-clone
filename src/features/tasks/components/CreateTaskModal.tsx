@@ -3,13 +3,14 @@
 import { ResponsiveModal } from "@/components/ResponsiveModal";
 
 import { useCreateTaskModal } from "../hooks/useCreateTaskModal";
+import { CreateTaskFormWrapper } from "./CreateTaskFormWrapper";
 
 export const CreateTaskModal = () => {
-  const { isOpen, setIsOpen } = useCreateTaskModal();
+  const { isOpen, close, setIsOpen } = useCreateTaskModal();
 
   return (
     <ResponsiveModal open={isOpen} onOpenChange={setIsOpen}>
-      <div className="">TODO: Task form</div>
+      <CreateTaskFormWrapper onCancel={close} />
     </ResponsiveModal>
   );
 };
