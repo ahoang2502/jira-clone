@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { DatePicker } from "@/components/DatePicker";
 import { DottedSeparator } from "@/components/Dotted-Separator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -100,7 +101,7 @@ export const CreateTaskForm = ({
                     <FormLabel>Due Date</FormLabel>
 
                     <FormControl>
-                      {/* Date Picker */}
+                      <DatePicker {...field} />
                     </FormControl>
 
                     <FormMessage />
