@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useGetMembers } from "@/features/members/api/useGetMembers";
 import { useGetProjects } from "@/features/projects/api/useGetProjects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
+import { CreateTaskForm } from "./CreateTaskForm";
 
 interface CreateTaskFormWrapperProps {
   onCancel: () => void;
@@ -43,7 +44,11 @@ export const CreateTaskFormWrapper = ({
       </Card>
     );
 
-  return <div>
-    {JSON.stringify(projectOptions)}
-  </div>;
+  return (
+    <CreateTaskForm
+      onCancel={onCancel}
+      projectOptions={projectOptions ?? []}
+      memberOptions={memberOptions ?? []}
+    />
+  );
 };
