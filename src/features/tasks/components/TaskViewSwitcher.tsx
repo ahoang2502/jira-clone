@@ -1,15 +1,16 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { Loader, PlusIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 
 import { DottedSeparator } from "@/components/Dotted-Separator";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { useGetTasks } from "../api/useGetTasks";
 import { useCreateTaskModal } from "../hooks/useCreateTaskModal";
-import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
+import { DataFilter } from "./DataFilter";
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", { defaultValue: "table" });
@@ -48,20 +49,26 @@ export const TaskViewSwitcher = () => {
         </div>
 
         <DottedSeparator className="my-4" />
-        {/* Data Filters */}
+        <DataFilter />
 
         <DottedSeparator className="my-4" />
-        <>
-          <TabsContent value="table" className="mt-0">
-            {JSON.stringify(tasks)}
-          </TabsContent>
-          <TabsContent value="kanban" className="mt-0">
-            {JSON.stringify(tasks)}
-          </TabsContent>
-          <TabsContent value="calendar" className="mt-0">
-            {JSON.stringify(tasks)}
-          </TabsContent>
-        </>
+        {isLoadingTasks ? (
+          <div className="w-full border rounded-lg h-[200px]  flex flex-col items-center justify-center">
+            <Loader className="size-5 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <>
+            <TabsContent value="table" className="mt-0">
+              {JSON.stringify(tasks)}
+            </TabsContent>
+            <TabsContent value="kanban" className="mt-0">
+              {JSON.stringify(tasks)}
+            </TabsContent>
+            <TabsContent value="calendar" className="mt-0">
+              {JSON.stringify(tasks)}
+            </TabsContent>
+          </>
+        )}
       </div>
     </Tabs>
   );
