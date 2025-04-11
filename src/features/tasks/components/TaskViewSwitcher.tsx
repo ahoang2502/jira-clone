@@ -10,16 +10,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { useGetTasks } from "../api/useGetTasks";
 import { useCreateTaskModal } from "../hooks/useCreateTaskModal";
+import { useTaskFilters } from "../hooks/useTaskFilters";
 import { DataFilter } from "./DataFilter";
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", { defaultValue: "table" });
+  const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
 
   const { open } = useCreateTaskModal();
   const workspaceId = useWorkspaceId();
 
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
     workspaceId,
+    projectId,
+    assigneeId,
+    status,
+    dueDate,
   });
 
   return (
