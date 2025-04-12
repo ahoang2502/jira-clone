@@ -5,6 +5,7 @@ import { useGetProjects } from "@/features/projects/api/useGetProjects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { useTaskFilters } from "../hooks/useTaskFilters";
 
+import { DatePicker } from "@/components/DatePicker";
 import {
   Select,
   SelectContent,
@@ -130,6 +131,15 @@ export const DataFilter = ({ hideProjectFilter }: DataFilterProps) => {
           ))}
         </SelectContent>
       </Select>
+
+      <DatePicker
+        placeholder="Due date"
+        className="h-8 w-full lg:w-auto"
+        value={dueDate ? new Date(dueDate) : undefined}
+        onChange={(date) => {
+          setFilters({ dueDate: date ? date.toISOString() : null });
+        }}
+      />
     </div>
   );
 };
