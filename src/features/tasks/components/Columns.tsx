@@ -7,7 +7,3 @@ import { Task } from "../types";
 export const columns: ColumnDef<Task>[] = [
   { accessorKey: "name", header: "Task Name" },
 ];
-
-export const Columns = () => {
-  return <div></div>;
-};
