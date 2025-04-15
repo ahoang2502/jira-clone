@@ -5,9 +5,10 @@ import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import { MemberAvatar } from "@/features/members/components/MemberAvatar";
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
 import { Task } from "../types";
-import { MemberAvatar } from "@/features/members/components/MemberAvatar";
+import { TaskDate } from "./TaskDate";
 
 export const columns: ColumnDef<Task>[] = [
   {
