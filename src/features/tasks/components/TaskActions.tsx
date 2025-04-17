@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Pencil, TrashIcon } from "lucide-react";
 import React from "react";
 
 import {
@@ -28,6 +28,33 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
           >
             <ExternalLink className="size-4 mr-2 stroke-2" />
             Task Details
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => {}}
+            disabled={false}
+            className="font-medium p-[10px]"
+          >
+            <ExternalLink className="size-4 mr-2 stroke-2" />
+            Open Project
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => {}}
+            disabled={false}
+            className="font-medium p-[10px]"
+          >
+            <Pencil className="size-4 mr-2 stroke-2" />
+            Edit Task
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => {}}
+            disabled={false}
+            className="font-medium p-[10px] text-amber-700 focus:text-amber-700"
+          >
+            <TrashIcon className="size-4 mr-2 stroke-2" />
+            Delete Task
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
