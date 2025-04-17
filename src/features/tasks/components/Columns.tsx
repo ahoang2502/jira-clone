@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, MoreVertical } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { MemberAvatar } from "@/features/members/components/MemberAvatar";
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
 import { Task } from "../types";
 import { TaskDate } from "./TaskDate";
+import { TaskActions } from "./TaskActions";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -36,13 +37,15 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "project",
     header: ({ column }) => {
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Project
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>;
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
       const project = row.original.project;
@@ -63,13 +66,15 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "assignee",
     header: ({ column }) => {
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Assignee
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>;
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Assignee
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
       const assignee = row.original.assignee;
@@ -90,13 +95,15 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "dueDate",
     header: ({ column }) => {
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Due Date
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>;
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Due Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
       const dueDate = row.original.dueDate;
@@ -107,18 +114,35 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Status
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>;
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
       const status = row.original.status;
 
       return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
+    },
+  },
+  {
+    id: "action",
+    cell: ({ row }) => {
+      const id = row.original.$id;
+      const projectId = row.original.projectId;
+
+      return (
+        <TaskActions id={id} projectId={projectId}>
+          <Button variant="ghost" className="size-8 p-0">
+            <MoreVertical className="size-4" />
+          </Button>
+        </TaskActions>
+      );
     },
   },
 ];
