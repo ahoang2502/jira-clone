@@ -1,4 +1,5 @@
 import { ExternalLink, Pencil, TrashIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useConfirm } from "@/hooks/useConfirm";
 
+import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { useDeleteTask } from "../api/useDeleteTask";
 
 interface TaskActionsProps {
@@ -18,6 +20,9 @@ interface TaskActionsProps {
 }
 
 export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
+  const router = useRouter();
+  const workspaceId = useWorkspaceId();
+
   const [ConfirmDialog, confirm] = useConfirm(
     "Delete task",
     "This action cannot be undone.",
@@ -33,6 +38,14 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
     mutate({ param: { taskId: id } });
   };
 
+  const onOpenTask = () => {
+    router.push(`/workspaces/${workspaceId}/tasks/${id}`);
+  };
+
+  const onOpenProject = () => {
+    router.push(`/workspaces/${workspaceId}/projects/${projectId}`);
+  };
+
   return (
     <div className="flex justify-end">
       <ConfirmDialog />
@@ -41,12 +54,18 @@ export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-48 ">
-          <DropdownMenuItem onClick={() => {}} className="font-medium p-[10px]">
+          <DropdownMenuItem
+            onClick={onOpenTask}
+            className="font-medium p-[10px]"
+          >
             <ExternalLink className="size-4 mr-2 stroke-2" />
             Task Details
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => {}} className="font-medium p-[10px]">
+          <DropdownMenuItem
+            onClick={onOpenProject}
+            className="font-medium p-[10px]"
+          >
             <ExternalLink className="size-4 mr-2 stroke-2" />
             Open Project
           </DropdownMenuItem>
