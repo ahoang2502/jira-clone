@@ -7,6 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useConfirm } from "@/hooks/useConfirm";
+
+import { useDeleteTask } from "../api/useDeleteTask";
 
 interface TaskActionsProps {
   id: string;
@@ -15,42 +18,47 @@ interface TaskActionsProps {
 }
 
 export const TaskActions = ({ id, projectId, children }: TaskActionsProps) => {
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Delete task",
+    "This action cannot be undone.",
+    "destructive"
+  );
+
+  const { mutate, isPending } = useDeleteTask();
+
+  const onDelete = async () => {
+    const ok = await confirm();
+    if (!ok) return;
+
+    mutate({ param: { taskId: id } });
+  };
+
   return (
     <div className="flex justify-end">
+      <ConfirmDialog />
+
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-48 ">
-          <DropdownMenuItem
-            onClick={() => {}}
-            disabled={false}
-            className="font-medium p-[10px]"
-          >
+          <DropdownMenuItem onClick={() => {}} className="font-medium p-[10px]">
             <ExternalLink className="size-4 mr-2 stroke-2" />
             Task Details
           </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => {}}
-            disabled={false}
-            className="font-medium p-[10px]"
-          >
+          <DropdownMenuItem onClick={() => {}} className="font-medium p-[10px]">
             <ExternalLink className="size-4 mr-2 stroke-2" />
             Open Project
           </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => {}}
-            disabled={false}
-            className="font-medium p-[10px]"
-          >
+          <DropdownMenuItem onClick={() => {}} className="font-medium p-[10px]">
             <Pencil className="size-4 mr-2 stroke-2" />
             Edit Task
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={() => {}}
-            disabled={false}
+            onClick={onDelete}
+            disabled={isPending}
             className="font-medium p-[10px] text-amber-700 focus:text-amber-700"
           >
             <TrashIcon className="size-4 mr-2 stroke-2" />
