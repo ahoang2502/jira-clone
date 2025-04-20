@@ -16,7 +16,9 @@ export const useGetTask = ({ taskId }: UseGetTaskProps) => {
         },
       });
 
-      if (!response.ok) throw new Error("Failed to fetch task");
+      if (!response.ok) {
+        throw new Error("Failed to fetch task");
+      }
 
       const { data } = await response.json();
 

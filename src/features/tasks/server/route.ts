@@ -19,7 +19,11 @@ const app = new Hono()
     const { taskId } = c.req.param();
     const { users } = await createAdminClient();
 
-    const task = await databases.getDocument(DATABASE_ID, TASKS_ID, taskId);
+    const task = await databases.getDocument<Task>(
+      DATABASE_ID,
+      TASKS_ID,
+      taskId
+    );
 
     const currentMember = await getMember({
       databases,
