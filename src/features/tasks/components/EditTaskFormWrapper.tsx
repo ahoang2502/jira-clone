@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useGetMembers } from "@/features/members/api/useGetMembers";
 import { useGetProjects } from "@/features/projects/api/useGetProjects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
-import { CreateTaskForm } from "./CreateTaskForm";
+import { useGetTask } from "../api/useGetTask";
+import { EditTaskForm } from "./EditTaskForm";
 
 interface EditTaskFormWrapperProps {
   onCancel: () => void;
@@ -17,6 +18,10 @@ export const EditTaskFormWrapper = ({
   id,
 }: EditTaskFormWrapperProps) => {
   const workspaceId = useWorkspaceId();
+
+  const { data: initialValues, isLoading: isLoadingTask } = useGetTask({
+    taskId: id,
+  });
 
   const { data: projects, isLoading: isLoadingProjects } = useGetProjects({
     workspaceId,
@@ -35,7 +40,7 @@ export const EditTaskFormWrapper = ({
     name: member.name,
   }));
 
-  const isLoading = isLoadingMembers || isLoadingProjects;
+  const isLoading = isLoadingMembers || isLoadingProjects || isLoadingTask;
 
   if (isLoading)
     return (
@@ -46,11 +51,14 @@ export const EditTaskFormWrapper = ({
       </Card>
     );
 
+  if (!initialValues) return null;
+
   return (
-    <CreateTaskForm
+    <EditTaskForm
       onCancel={onCancel}
       projectOptions={projectOptions ?? []}
       memberOptions={memberOptions ?? []}
+      initialValues={initialValues}
     />
   );
 };
