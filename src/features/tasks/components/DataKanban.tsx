@@ -7,6 +7,7 @@ import {
 } from "@hello-pangea/dnd";
 
 import { Task, TaskStatus } from "../types";
+import { KanbanColumnHeader } from "./KanbanColumnHeader";
 
 const boards: TaskStatus[] = [
   TaskStatus.BACKLOG,
@@ -25,7 +26,7 @@ interface DataKanbanProps {
 }
 
 export const DataKanban = ({ data }: DataKanbanProps) => {
-  const [task, setTask] = useState<TasksState>(() => {
+  const [tasks, setTasks] = useState<TasksState>(() => {
     const initialTasks: TasksState = {
       [TaskStatus.BACKLOG]: [],
       [TaskStatus.TODO]: [],
@@ -56,7 +57,10 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
               key={board}
               className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
             >
-              {board}
+              <KanbanColumnHeader
+                board={board}
+                taskCount={tasks[board].length}
+              />
             </div>
           );
         })}
