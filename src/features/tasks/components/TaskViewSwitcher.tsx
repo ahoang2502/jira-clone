@@ -11,10 +11,11 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { useGetTasks } from "../api/useGetTasks";
 import { useCreateTaskModal } from "../hooks/useCreateTaskModal";
 import { useTaskFilters } from "../hooks/useTaskFilters";
-import { DataFilter } from "./DataFilter";
 
-import { DataTable } from "./DataTable";
+import { DataFilter } from "./DataFilter";
 import { columns } from "./Columns";
+import { DataKanban } from "./DataKanban";
+import { DataTable } from "./DataTable";
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", { defaultValue: "table" });
@@ -71,7 +72,7 @@ export const TaskViewSwitcher = () => {
               <DataTable columns={columns} data={tasks?.documents ?? []} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
-              {JSON.stringify(tasks)}
+              <DataKanban data={tasks?.documents ?? []} />
             </TabsContent>
             <TabsContent value="calendar" className="mt-0">
               {JSON.stringify(tasks)}
