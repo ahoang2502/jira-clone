@@ -21,7 +21,13 @@ import { DataFilter } from "./DataFilter";
 import { DataKanban } from "./DataKanban";
 import { DataTable } from "./DataTable";
 
-export const TaskViewSwitcher = () => {
+interface TaskViewSwitcherProps {
+  hideProjectFilter?: boolean;
+}
+
+export const TaskViewSwitcher = ({
+  hideProjectFilter,
+}: TaskViewSwitcherProps) => {
   const [view, setView] = useQueryState("task-view", { defaultValue: "table" });
   const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
 
@@ -72,7 +78,7 @@ export const TaskViewSwitcher = () => {
         </div>
 
         <DottedSeparator className="my-4" />
-        <DataFilter />
+        <DataFilter hideProjectFilter={hideProjectFilter} />
 
         <DottedSeparator className="my-4" />
         {isLoadingTasks ? (
