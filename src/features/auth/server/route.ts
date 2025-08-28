@@ -34,6 +34,7 @@ const app = new Hono()
     const { email, password, name } = await c.req.valid("json");
 
     const { account } = await createAdminClient();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = await account.create(ID.unique(), email, password, name);
 
     const session = await account.createEmailPasswordSession(email, password);

@@ -20,6 +20,7 @@ import { DataCalendar } from "./DataCalendar";
 import { DataFilter } from "./DataFilter";
 import { DataKanban } from "./DataKanban";
 import { DataTable } from "./DataTable";
+import { useProjectId } from "@/features/projects/hooks/useProjectId";
 
 interface TaskViewSwitcherProps {
   hideProjectFilter?: boolean;
@@ -33,12 +34,13 @@ export const TaskViewSwitcher = ({
 
   const { open } = useCreateTaskModal();
   const workspaceId = useWorkspaceId();
+  const paramProjectId = useProjectId();
 
   const { mutate: bulkUpdate } = useBulkUpdateTasks();
 
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
     workspaceId,
-    projectId,
+    projectId: paramProjectId || projectId,
     assigneeId,
     status,
     dueDate,
