@@ -1,8 +1,8 @@
 "use client";
 
-import { CalendarIcon, PlusIcon } from "lucide-react";
-import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import { CalendarIcon, PlusIcon, SettingsIcon } from "lucide-react";
+import Link from "next/link";
 
 import { Analytics } from "@/components/Analytics";
 import { PageError } from "@/components/PageError";
@@ -12,15 +12,17 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { DottedSeparator } from "@/components/Dotted-Separator";
 import { useGetMembers } from "@/features/members/api/useGetMembers";
+import { Member } from "@/features/members/types";
 import { useGetProjects } from "@/features/projects/api/useGetProjects";
+import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
 import { useCreateProjectModal } from "@/features/projects/hooks/useCreateProjectModal";
+import { Project } from "@/features/projects/types";
 import { useGetTasks } from "@/features/tasks/api/useGetTasks";
 import { useCreateTaskModal } from "@/features/tasks/hooks/useCreateTaskModal";
 import { Task } from "@/features/tasks/types";
 import { useGetWorkspaceAnalytics } from "@/features/workspaces/api/useGetWorkspaceAnalytics";
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId";
-import { Project } from "@/features/projects/types";
-import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
+import { MemberAvatar } from "@/features/members/components/MemberAvatar";
 
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
@@ -55,6 +57,7 @@ export const WorkspaceIdClient = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <TaskList data={tasks.documents} total={tasks.total} />
         <ProjectList data={projects.documents} total={projects.total} />
+        <MemberList data={members.documents} total={members.total} />
       </div>
     </div>
   );
@@ -156,7 +159,9 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
                       fallbackClassName="text-lg"
                     />
 
-                    <p className="text-lg font-medium truncate"></p>
+                    <p className="text-lg font-medium truncate">
+                      {project.name}
+                    </p>
                   </CardContent>
                 </Card>
               </Link>
@@ -165,6 +170,58 @@ export const ProjectList = ({ data, total }: ProjectListProps) => {
 
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
             No projects found
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+interface MemberListProps {
+  data: Member[];
+  total: number;
+}
+
+export const MemberList = ({ data, total }: MemberListProps) => {
+  const workspaceId = useWorkspaceId();
+
+  return (
+    <div className="flex flex-col gap-y-4 col-span-1">
+      <div className="bg-white border rounded-lg p-4">
+        <div className="flex items-center justify-between">
+          <p className="text-lg font-semibold">Members ({total})</p>
+
+          <Button variant="secondary" size="icon" asChild>
+            <Link href={`/workspaces/${workspaceId}/members`}>
+              <SettingsIcon className="size-4 text-neutral-400" />
+            </Link>
+          </Button>
+        </div>
+
+        <DottedSeparator className="my-4" />
+
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {data.map((member) => (
+            <li key={member.$id}>
+              <Card className="shadow-none rounded-lg overflow-hidden">
+                <CardContent className="p-3 flex flex-col items-center gap-x-2">
+                  <MemberAvatar name={member.name} className="size-12" />
+
+                  <div className="flex flex-col items-center overflow-hidden">
+                    <p className="text-lg font-medium line-clamp-1">
+                      {member.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground line-clamp-1">
+                      {member.email}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </li>
+          ))}
+
+          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block">
+            No members found
           </li>
         </ul>
       </div>
