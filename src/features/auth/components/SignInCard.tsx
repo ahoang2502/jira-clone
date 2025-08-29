@@ -18,8 +18,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { loginSchema } from "../schemas";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 import { useLogin } from "../api/useLogin";
+import { loginSchema } from "../schemas";
 
 export const SignInCard = () => {
   const { mutate, isPending } = useLogin();
@@ -102,6 +103,7 @@ export const SignInCard = () => {
           variant="secondary"
           className="w-full"
           disabled={isPending}
+          onClick={() => signUpWithGoogle()}
         >
           <FcGoogle className="mr-2 size-5" />
           Login with Google
@@ -112,6 +114,7 @@ export const SignInCard = () => {
           variant="secondary"
           className="w-full"
           disabled={isPending}
+          onClick={() => signUpWithGithub()}
         >
           <FaGithub className="mr-2 size-5" />
           Login with Github
